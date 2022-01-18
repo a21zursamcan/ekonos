@@ -46,13 +46,13 @@ public class taulell {
 		this.novaCarta("Gamma", "rosa", "vermell");
 		this.novaCarta("Gamma", "vermell", "verd");
 		this.novaCarta("Gamma", "blauFort", "rosa");
-		// Omicron
-		this.novaCarta("Omicron", "blau", "verd");
-		this.novaCarta("Omicron", "verd", "groc");
-		this.novaCarta("Omicron", "vermell", "verd");
-		this.novaCarta("Omicron", "vermell", "groc");
-		this.novaCarta("Omicron", "vermell", "blauFort");
-		this.novaCarta("Omicron", "blauFort", "groc");
+		// Omega
+		this.novaCarta("Omega", "blau", "verd");
+		this.novaCarta("Omega", "verd", "groc");
+		this.novaCarta("Omega", "vermell", "verd");
+		this.novaCarta("Omega", "vermell", "groc");
+		this.novaCarta("Omega", "vermell", "blauFort");
+		this.novaCarta("Omega", "blauFort", "groc");
 		// Epsilon
 		this.novaCarta("Epsilon", "blau", "rosa");
 		this.novaCarta("Epsilon", "blau", "vermell");
@@ -67,7 +67,7 @@ public class taulell {
 		empreses.add(new empresa("Delta","verd"));
 		empreses.add(new empresa("Beta","blauFort"));
 		empreses.add(new empresa("Gamma","blau"));
-		empreses.add(new empresa("Omicron","rosa"));
+		empreses.add(new empresa("Omega","rosa"));
 		empreses.add(new empresa("Epsilon","groc"));
 	}
 
