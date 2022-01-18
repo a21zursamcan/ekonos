@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import interficie.interficie;
 
 public class jugador {
-
+//
 //Variables 
 	public ArrayList<carta> ma = new ArrayList<carta>();
 	public String nom;
