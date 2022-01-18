@@ -16,6 +16,7 @@ public class jugador {
 	public interficie i;
 	public int unitatMonetaria=0;
 	public int accions=18;
+	public boolean teAccions;
 
 	jugador(String nom, int id) {
 		this.nom = nom;
