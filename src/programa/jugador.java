@@ -15,6 +15,7 @@ public class jugador {
 	public boolean patada=false;
 	public interficie i;
 	public int unitatMonetaria=0;
+	public int accions=18;
 
 	jugador(String nom, int id) {
 		this.nom = nom;
