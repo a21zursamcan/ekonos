@@ -341,7 +341,7 @@ public class taulell {
 			String linea = null;
 			linea = (x + ".-" + empreses.get(x).nom + ": ");
 			for (int y = 0; y < jugadors.size(); x++) {
-				linea = linea + jugadors.get(y).nom+"<"+empreses.get(x).accionsJugador(jugador)+">";
+				linea = linea + jugadors.get(y).nom+"<"+empreses.get(x).numeroAccionsJugador(jugadors.get(y))+">";
 				if (y != jugadors.size() - 1) {
 					linea = linea + ", ";
 				}
@@ -351,38 +351,36 @@ public class taulell {
 
 
 	public void compraAccions(jugador jugador) {
-		String resposta1;
-		String resposta2;
-		int xSeleccio;
-		int quantesAccions;
-		boolean cofirmaCompra = false;
-		i.imprimeix("Vols compra alguna acció?");
-		resposta1 = sc.nextLine();
-		if (resposta1.equalsIgnoreCase("si")) {
-			do {
+		if(jugador.accions>0){
+			String resposta1;
+			String resposta2;
+			int xSeleccio;
+			boolean cofirmaCompra = false;
+			i.imprimeix("Vols compra alguna acció?");
+			resposta1 = sc.nextLine();
+			if (resposta1.equalsIgnoreCase("si")) {
 				//Aqui es te que veure les accions disponibles a comprar
 				this.mostraAccionsEmpreses();
 				//Es selecciona una accio
 				i.imprimeix("Selecciona l'empresa en la que vols invertir l'accio (escriu el numero de la llista): ");
 				xSeleccio = Integer.parseInt(sc.nextLine());
+				empresa empresaActual=empreses.get(xSeleccio);
 				//Captura excepcio de numero (encara no fet)
-				i.imprimeix("Has seleccionat l'empresa: " + empreses.get(xSeleccio).nom);
-				//Saber quantes accions vol comprar l'usuari
-				i.imprimeix("Quantes accions vol comprar?");
-
-
+				i.imprimeix("Has seleccionat l'empresa: " +empresaActual.nom);
 				//Aqui es dira el preu de l'accio
-
+				i.imprimeix("El preu d'aquesta Accio es" + empresaActual.valorCompra());
 				//Es verifica si l'usuari vol comprar l'accio
 				i.imprimeix("Vols comprar aquesta acció?");
 				resposta2 = sc.nextLine();
 				if (resposta2.equalsIgnoreCase("si")) {
-					cofirmaCompra = true;
+					jugador.unitatMonetaria=jugador.unitatMonetaria-empresaActual.valorCompra();
+					empresaActual.accions.add(jugador);
 				}
-				//Pregunta novament per verificar que ja no vol comprar accions
-				i.imprimeix("Vols comprar alguna acció més?");
-				resposta1 = sc.nextLine();
-			} while (resposta1.equalsIgnoreCase("si") && jugador.unitatMonetaria>0);
+				//Torna a començar
+				this.compraAccions(jugador);
+			}
+		}else{
+			i.imprimeix("No tens accions disponibles, tens que vendre alguna");
 		}
 	}
 

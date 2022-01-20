@@ -8,7 +8,7 @@ public class empresa {
 	int marcadorDeCreixement;
 	jugador president = null;
 	String nom;
-	ArrayList<jugador> accions = new ArrayList<jugador>();
+	static ArrayList<jugador> accions = new ArrayList<jugador>();
 
 	empresa(String nom, String color) {
 		this.nom = nom;
@@ -25,8 +25,24 @@ public class empresa {
 		return numero;
 	}
 
-	public int preuAccions(){
+	public boolean comprovaPresident(jugador jugadorActual){
+		if (jugadorActual.accions<this.numeroAccionsJugador(president)) {
+			return false;
+		}
+		else if (jugadorActual.accions>this.numeroAccionsJugador(president)){
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 
+	public int valorVenta(){
+		return this.accions.size();
+	}
+
+	public int valorCompra(){
+		return this.accions.size()+1;
 	}
 
 	public String toString() {
