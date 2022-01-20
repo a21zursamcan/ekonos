@@ -63,12 +63,12 @@ public class taulell {
 	}
 
 	public void generarEmpreses() {
-		empreses.add(new empresa("Alfa","vermell"));
-		empreses.add(new empresa("Delta","verd"));
-		empreses.add(new empresa("Beta","blauFort"));
-		empreses.add(new empresa("Gamma","blau"));
-		empreses.add(new empresa("Omega","rosa"));
-		empreses.add(new empresa("Epsilon","groc"));
+		empreses.add(new empresa("Alfa", "vermell"));
+		empreses.add(new empresa("Delta", "verd"));
+		empreses.add(new empresa("Beta", "blauFort"));
+		empreses.add(new empresa("Gamma", "blau"));
+		empreses.add(new empresa("Omega", "rosa"));
+		empreses.add(new empresa("Epsilon", "groc"));
 	}
 
 	public void novaCarta(String empresa, String color1, String color2) {
@@ -125,7 +125,7 @@ public class taulell {
 	}
 
 	public void introdueixJugadors(interficie i) {
-		
+
 		this.i = i;
 		boolean mesJugadors = true;
 		int numeroJugador = this.jugadors.size();
@@ -276,62 +276,133 @@ public class taulell {
 
 	public void seleccionaCarta(jugador jugador) {
 		int numeroCarta = sc.nextInt();
-		
+
 		carta carta = jugador.ma.get(numeroCarta);
 		jugador.ma.remove(numeroCarta);
-		empresa empresa=this.tradueixColorEmpresa(carta.color1);
+		empresa empresa = this.tradueixColorEmpresa(carta.color1);
 		empresa.marcadorDeCreixement++;
 		this.comprobaCasella(empresa);
-		empresa=this.tradueixColorEmpresa(carta.color2);
+		empresa = this.tradueixColorEmpresa(carta.color2);
 		empresa.marcadorDeCreixement++;
 		this.comprobaCasella(empresa);
 		this.mostraEmpreses();
 	}
-	
+
 	public void comprobaCasella(empresa empresa) {
-		if(empresa.marcadorDeCreixement==4) {
+		if (empresa.marcadorDeCreixement == 4) {
 			this.marcador4(empresa);
-		}else {
-			if(empresa.marcadorDeCreixement==6) {
+		} else {
+			if (empresa.marcadorDeCreixement == 6) {
 				this.marcador6(empresa);
 			}
 		}
 	}
-	
+
 	public void marcador4(empresa empresa) {
 		//Funcio al arribar al marcador de creixement numero 4
 		System.out.println("Marcador de Creixement 4");
 	}
-	
+
 	public void marcador6(empresa empresa) {
 		//Funcio al arribar al marcador de creixement numero 6
-		empresa.marcadorDeCreixement=0;
+		empresa.marcadorDeCreixement = 0;
 		System.out.println("Marcador de Creixement 6");
 	}
-	
+
 	public empresa tradueixColorEmpresa(String color) {
-		for(int x=0;x<empreses.size();x++) {
-			if(empreses.get(x).color.equals(color)) {
+		for (int x = 0; x < empreses.size(); x++) {
+			if (empreses.get(x).color.equals(color)) {
 				return empreses.get(x);
 			}
 		}
-		i.imprimeixErr("Empresa de color "+color+" no trobada");
+		i.imprimeixErr("Empresa de color " + color + " no trobada");
 		return null;
 	}
 
 	public int cobrament(jugador jugador) {
-		//Crea un nou valor 
-		int total=jugador.unitatMonetaria;
-		if(jugadors.size()==6||jugadors.size()==4||jugadors.size()==3) {
+		//Crea un nou valor
+		int total = jugador.unitatMonetaria;
+		if (jugadors.size() == 6 || jugadors.size() == 4 || jugadors.size() == 3) {
 			//Suma el numero de unitats monetaries al total
-			total=total+12;
+			total = total + 12;
 			return total;
-		}else {
-			if(jugadors.size()==5) {
-				total=total+10;
+		} else {
+			if (jugadors.size() == 5) {
+				total = total + 10;
 				return total;
 			}
 			return 0;
 		}
+	}
+
+
+	public void mostraAccionsEmpreses() {
+		for (int x = 0; x < empreses.size(); x++) {
+			String linea = null;
+			linea = (x + ".-" + empreses.get(x).nom + ": ");
+			for (int y = 0; y < jugadors.size(); x++) {
+				linea = linea + jugadors.get(y).nom+"<"+empreses.get(x).accionsJugador(jugador)+">";
+				if (y != jugadors.size() - 1) {
+					linea = linea + ", ";
+				}
+			}
+		}
+	}
+
+
+	public void compraAccions(jugador jugador) {
+		String resposta1;
+		String resposta2;
+		int xSeleccio;
+		int quantesAccions;
+		boolean cofirmaCompra = false;
+		i.imprimeix("Vols compra alguna acció?");
+		resposta1 = sc.nextLine();
+		if (resposta1.equalsIgnoreCase("si")) {
+			do {
+				//Aqui es te que veure les accions disponibles a comprar
+				this.mostraAccionsEmpreses();
+				//Es selecciona una accio
+				i.imprimeix("Selecciona l'empresa en la que vols invertir l'accio (escriu el numero de la llista): ");
+				xSeleccio = Integer.parseInt(sc.nextLine());
+				//Captura excepcio de numero (encara no fet)
+				i.imprimeix("Has seleccionat l'empresa: " + empreses.get(xSeleccio).nom);
+				//Saber quantes accions vol comprar l'usuari
+				i.imprimeix("Quantes accions vol comprar?");
+
+
+				//Aqui es dira el preu de l'accio
+
+				//Es verifica si l'usuari vol comprar l'accio
+				i.imprimeix("Vols comprar aquesta acció?");
+				resposta2 = sc.nextLine();
+				if (resposta2.equalsIgnoreCase("si")) {
+					cofirmaCompra = true;
+				}
+				//Pregunta novament per verificar que ja no vol comprar accions
+				i.imprimeix("Vols comprar alguna acció més?");
+				resposta1 = sc.nextLine();
+			} while (resposta1.equalsIgnoreCase("si") && jugador.unitatMonetaria>0);
+		}
+	}
+
+	public void vendreAcions(jugador jugador) {
+		String resposta;
+		int xSeleccio;
+		if (!jugador.teAccions) {
+			i.imprimeix("No tens cap acció");
+		} else {
+			i.imprimeix("Vols vendre alguna accio?");
+			resposta = sc.nextLine();
+			if (resposta.equalsIgnoreCase("si")) {
+				i.imprimeix("Tens disponibles aquestes Unitats Monetaries: " + jugador.unitatMonetaria);
+				this.mostraAccionsEmpreses();
+				i.imprimeix("Selecciona de quina empresa vols vendre accions ");
+				xSeleccio = Integer.parseInt(sc.nextLine());
+				i.imprimeix("Has seleccionat l'empresa: " + empreses.get(xSeleccio).nom);
+
+			}
+		}
+
 	}
 }
