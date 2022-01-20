@@ -385,7 +385,7 @@ public class taulell {
 	}
 
 	public void vendreAcions(jugador jugador) {
-		String resposta;
+		String resposta, siFinal;
 		int xSeleccio;
 		if (!jugador.teAccions) {
 			i.imprimeix("No tens cap acció");
@@ -397,8 +397,20 @@ public class taulell {
 				this.mostraAccionsEmpreses();
 				i.imprimeix("Selecciona de quina empresa vols vendre accions ");
 				xSeleccio = Integer.parseInt(sc.nextLine());
-				i.imprimeix("Has seleccionat l'empresa: " + empreses.get(xSeleccio).nom);
+				empresa empresaActual=empreses.get(xSeleccio);
+				i.imprimeix("Has seleccionat l'empresa: " + empresaActual.nom);
+				i.imprimeix("Aquesta accio te un valor actual de: "+empresaActual.valorVenta());
+				i.imprimeix("Vols vendre aquesta accio finalment?");
+				siFinal = sc.nextLine();
+				if (siFinal.equalsIgnoreCase("si")) {
+					jugador.unitatMonetaria=jugador.unitatMonetaria+empresaActual.valorVenta();
+					empresaActual.accions.remove(empresaActual.accions.size()-1);
 
+				}
+				else{
+					i.imprimeix("Has cancelat la venta de l'accio");
+				}
+				this.vendreAcions(jugador);
 			}
 		}
 
