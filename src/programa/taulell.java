@@ -1,6 +1,7 @@
 package programa;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import interficie.interficie;
@@ -275,17 +276,28 @@ public class taulell {
 	}
 
 	public void seleccionaCarta(jugador jugador) {
-		int numeroCarta = sc.nextInt();
+		try {
+			int numeroCarta = sc.nextInt();
 
-		carta carta = jugador.ma.get(numeroCarta);
-		jugador.ma.remove(numeroCarta);
-		empresa empresa = this.tradueixColorEmpresa(carta.color1);
-		empresa.marcadorDeCreixement++;
-		this.comprobaCasella(empresa);
-		empresa = this.tradueixColorEmpresa(carta.color2);
-		empresa.marcadorDeCreixement++;
-		this.comprobaCasella(empresa);
-		this.mostraEmpreses();
+
+			carta carta = jugador.ma.get(numeroCarta);
+			jugador.ma.remove(numeroCarta);
+			empresa empresa = this.tradueixColorEmpresa(carta.color1);
+			empresa.marcadorDeCreixement++;
+			this.comprobaCasella(empresa);
+			empresa = this.tradueixColorEmpresa(carta.color2);
+			empresa.marcadorDeCreixement++;
+			this.comprobaCasella(empresa);
+			this.mostraEmpreses();
+		}catch(InputMismatchException e){
+			i.imprimeixErr("Valor introduit incorrecte!");
+			this.seleccionaCarta(jugador);
+		}catch(IndexOutOfBoundsException e){
+			i.imprimeixErr("Numero introduit incorrecte!");
+			this.seleccionaCarta(jugador);
+		}finally {
+			sc.nextLine();
+		}
 	}
 
 	public void comprobaCasella(empresa empresa) {
