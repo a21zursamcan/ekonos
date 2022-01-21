@@ -352,7 +352,7 @@ public class taulell {
 		for (int x = 0; x < empreses.size(); x++) {
 			String linea = null;
 			linea = (x + ".-" + empreses.get(x).nom + ": ");
-			for (int y = 0; y < jugadors.size(); x++) {
+			for (int y = 0; y < jugadors.size(); y++) {
 				linea = linea + jugadors.get(y).nom+"<"+empreses.get(x).numeroAccionsJugador(jugadors.get(y))+">";
 				if (y != jugadors.size() - 1) {
 					linea = linea + ", ";
@@ -380,7 +380,7 @@ public class taulell {
 				//Captura excepcio de numero (encara no fet)
 				i.imprimeix("Has seleccionat l'empresa: " +empresaActual.nom);
 				//Aqui es dira el preu de l'accio
-				i.imprimeix("El preu d'aquesta Accio es" + empresaActual.valorCompra());
+				i.imprimeix("El preu d'aquesta Accio es " + empresaActual.valorCompra());
 				//Es verifica si l'usuari vol comprar l'accio
 				i.imprimeix("Vols comprar aquesta acció?");
 				resposta2 = sc.nextLine();
@@ -391,8 +391,15 @@ public class taulell {
 					empresaActual.accions.add(jugador);
 					jugador.accions--;
 				}
-				//Torna a començar
-				this.compraAccions(jugador);
+//				Torna a començar (l'hem comentat ja que a la pagina web fica que solament pots fer un cop aquesta opció)
+//				this.compraAccions(jugador);
+			}else{
+				if(resposta1.equalsIgnoreCase("no")){
+					i.imprimeix("No has comprat cap accio");
+				}else{
+					i.imprimeixErr("Valor introduir incorrecte");
+					this.compraAccions(jugador);
+				}
 			}
 		}else{
 			i.imprimeix("No tens accions disponibles, tens que vendre alguna");
@@ -421,11 +428,39 @@ public class taulell {
 					jugador.unitatMonetaria=jugador.unitatMonetaria+empresaActual.valorVenta();
 					empresaActual.accions.remove(empresaActual.accions.size()-1);
 					jugador.accions++;
+					if(empresaActual.president==jugador){
+						//Llista amb els posibles substituts per president
+						ArrayList<jugador> posiblesPresidents = new ArrayList<jugador>();
+						//Si el jugador es el president actual de la empresa
+						for(int i = 0; i<jugadors.size();i++){
+							if(jugadors.get(i)==jugador){
+								//Si es el mateix jugador no es comproba res
+							}else{
+								if(empresaActual.numeroAccionsJugador(jugadors.get(i))> empresaActual.numeroAccionsJugador(empresaActual.president)){
+									posiblesPresidents.add(jugadors.get(i));
+								}
+							}
+						}
+						if(posiblesPresidents.size()>1){
+							i.imprimeix("Aquests jugadors tenen mes accions que tu a causa de la venta que has fet");
+							for(int x=0; x<posiblesPresidents.size(); x++){
+								i.imprimeix(x+".-"+posiblesPresidents.get(x));
+							}
+							i.imprimeix("Selecciona un d'aquests per ser el teu substitut en la presidència: ");
+							int nouPresident=Integer.parseInt(sc.nextLine());
+							empresaActual.president=posiblesPresidents.get(nouPresident);
+							i.imprimeix("Felicitats! "+empresaActual.president.nom+", s'ha convertit en el nou president");
+						}else{
+							empresaActual.president=posiblesPresidents.get(0);
+							i.imprimeixErr(empresaActual.president.nom+" s'ha convertit en el nou president per que es el mayor accionista");
+						}
+					}
 				}
 				else{
 					i.imprimeix("Venta de la acció: CANCELADA!");
 				}
-				this.vendreAcions(jugador);
+//				Torna a començar (l'hem comentat ja que a la pagina web fica que solament pots fer un cop aquesta opció)
+//				this.vendreAccions(jugador);
 			}
 			else System.out.println("----------------------------");
 		}
