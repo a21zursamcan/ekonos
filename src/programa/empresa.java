@@ -15,6 +15,13 @@ public class empresa {
 		this.color = color;
 	}
 
+	public boolean primeraAccioxPresident (jugador jugadorActual){
+		if (accions.get(0)==jugadorActual){
+			return true;
+		}
+		return false;
+	}
+
 	public int numeroAccionsJugador(jugador jugador){
 		int numero = 0;
 		for(int x=0;x<accions.size();x++){

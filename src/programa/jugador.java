@@ -16,7 +16,7 @@ public class jugador {
 	public interficie i;
 	public int unitatMonetaria=0;
 	public int accions=18;
-	public boolean teAccions=false;
+	//public boolean teAccions=false; la he comentado porque alfinal he usado "if (jugador.accions==18)"
 
 	jugador(String nom, int id) {
 		this.nom = nom;

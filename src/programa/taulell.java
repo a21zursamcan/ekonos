@@ -224,7 +224,7 @@ public class taulell {
 	public jugador seleccionarPrimerJugador(int ronda, jugador anteriorPrimerJugador) {
 		if (ronda == 1) {
 			// Si es la primera ronda seleccionem un jugador aleatori
-			int numeroAleatori = (int) Math.round(Math.random() * jugadors.size() - 1);
+			int numeroAleatori = (int) Math.round(Math.random() * (jugadors.size() - 1));
 
 			return jugadors.get((int) numeroAleatori);
 		} else {
@@ -374,7 +374,10 @@ public class taulell {
 				resposta2 = sc.nextLine();
 				if (resposta2.equalsIgnoreCase("si")) {
 					jugador.unitatMonetaria=jugador.unitatMonetaria-empresaActual.valorCompra();
+					empresaActual.primeraAccioxPresident(jugador);
+					empresaActual.comprovaPresident(jugador);
 					empresaActual.accions.add(jugador);
+					jugador.accions--;
 				}
 				//Torna a començar
 				this.compraAccions(jugador);
@@ -387,7 +390,7 @@ public class taulell {
 	public void vendreAcions(jugador jugador) {
 		String resposta, siFinal;
 		int xSeleccio;
-		if (!jugador.teAccions) {
+		if (jugador.accions==18) {
 			i.imprimeix("No tens cap acció");
 		} else {
 			i.imprimeix("Vols vendre alguna accio?");
@@ -405,13 +408,14 @@ public class taulell {
 				if (siFinal.equalsIgnoreCase("si")) {
 					jugador.unitatMonetaria=jugador.unitatMonetaria+empresaActual.valorVenta();
 					empresaActual.accions.remove(empresaActual.accions.size()-1);
-
+					jugador.accions++;
 				}
 				else{
-					i.imprimeix("Has cancelat la venta de l'accio");
+					i.imprimeix("Venta de la acció: CANCELADA!");
 				}
 				this.vendreAcions(jugador);
 			}
+			else System.out.println("----------------------------");
 		}
 
 	}

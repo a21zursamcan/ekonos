@@ -53,8 +53,10 @@ public class juga {
 						jugadorActiu.unitatMonetaria=t.cobrament(jugadorActiu);
 					}
 					i.tornJugador(jugadorActiu);
-					t.compraAccions(jugadorActiu);
+					i.imprimeix("----------FASE DE VENTA DE ACCIONS------------");
 					t.vendreAcions(jugadorActiu);
+					i.imprimeix("----------FASE DE COMPRA DE ACCIONS------------");
+					t.compraAccions(jugadorActiu);
 					try {
 						jugadorActiu=t.jugadors.get(jugadorActiu.id);
 					} catch (IndexOutOfBoundsException e) {
