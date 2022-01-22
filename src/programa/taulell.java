@@ -424,7 +424,7 @@ public class taulell {
 		if (jugador.accions==18) {
 			i.imprimeix("No tens cap acció");
 		} else {
-			i.imprimeix("Vols vendre alguna accio?");
+			i.imprimeix("Vols vendre alguna acció? Tens disponibles aquestes Unitats Monetaries:"+jugador.unitatMonetaria+" U.M");
 			resposta = sc.nextLine();
 			if (resposta.equalsIgnoreCase("si")) {
 				i.imprimeix("Tens disponibles aquestes Unitats Monetaries: " + jugador.unitatMonetaria);
