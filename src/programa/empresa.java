@@ -8,40 +8,33 @@ public class empresa {
 	int marcadorDeCreixement;
 	jugador president = null;
 	String nom;
-	static ArrayList<jugador> accions = new ArrayList<jugador>();
+	ArrayList<jugador> accions = new ArrayList<jugador>();
 
 	empresa(String nom, String color) {
 		this.nom = nom;
 		this.color = color;
 	}
 
-	public boolean primeraAccioxPresident (jugador jugadorActual){
-		if (accions.get(0)==jugadorActual){
-			return true;
-		}
-		return false;
-	}
-
-	public int numeroAccionsJugador(jugador jugador){
+	public int numeroAccionsJugador(jugador jugador) {
 		int numero = 0;
-		for(int x=0;x<accions.size();x++){
-			if(accions.get(x)==jugador){
+		for (int x = 0; x < accions.size(); x++) {
+			if (accions.get(x) == jugador) {
 				numero++;
 			}
 		}
 		return numero;
 	}
 
-	public boolean comprovaPresident(jugador jugadorActual){
-		if (jugadorActual.accions<this.numeroAccionsJugador(president)) {
-			return false;
+	public void eliminaUltimaAccio(jugador jugador){
+		//Busquem l'ultima accio del jugador
+		int posicioAccio=0;
+		for(int x=0; x<accions.size();x++){
+			if(accions.get(x)==jugador){
+				posicioAccio=x;
+			}
 		}
-		else if (jugadorActual.accions>this.numeroAccionsJugador(president)){
-			return true;
-		}
-		else {
-			return false;
-		}
+		//Una vegada que sabem quina és l'última acció del jugador l'eliminem
+		accions.remove(posicioAccio);
 	}
 
 	public int valorVenta(){

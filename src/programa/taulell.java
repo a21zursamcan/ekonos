@@ -277,9 +277,7 @@ public class taulell {
 
 	public void seleccionaCarta(jugador jugador) {
 		try {
-			int numeroCarta = sc.nextInt();
-
-
+			int numeroCarta = Integer.parseInt(sc.nextLine());
 			carta carta = jugador.ma.get(numeroCarta);
 			jugador.ma.remove(numeroCarta);
 			empresa empresa = this.tradueixColorEmpresa(carta.color1);
@@ -295,8 +293,9 @@ public class taulell {
 		}catch(IndexOutOfBoundsException e){
 			i.imprimeixErr("Numero introduit incorrecte!");
 			this.seleccionaCarta(jugador);
-		}finally {
-			sc.nextLine();
+		}catch (IllegalArgumentException e){
+			i.imprimeixErr("Valor introduit incorrecte!");
+			this.seleccionaCarta(jugador);
 		}
 	}
 
@@ -358,7 +357,9 @@ public class taulell {
 					linea = linea + ", ";
 				}
 			}
+			i.imprimeix(linea);
 		}
+
 	}
 
 
@@ -368,7 +369,7 @@ public class taulell {
 			String resposta2;
 			int xSeleccio;
 			boolean cofirmaCompra = false;
-			i.imprimeix("Vols compra alguna acció?");
+			i.imprimeix("Vols compra alguna acció? tens "+jugador.unitatMonetaria+" U.M");
 			resposta1 = sc.nextLine();
 			if (resposta1.equalsIgnoreCase("si")) {
 				//Aqui es te que veure les accions disponibles a comprar
@@ -380,14 +381,25 @@ public class taulell {
 				//Captura excepcio de numero (encara no fet)
 				i.imprimeix("Has seleccionat l'empresa: " +empresaActual.nom);
 				//Aqui es dira el preu de l'accio
-				i.imprimeix("El preu d'aquesta Accio es " + empresaActual.valorCompra());
+				i.imprimeix("El preu d'aquesta Acció es " + empresaActual.valorCompra()+" et quedarà "+(jugador.unitatMonetaria-empresaActual.valorCompra()));
 				//Es verifica si l'usuari vol comprar l'accio
 				i.imprimeix("Vols comprar aquesta acció?");
 				resposta2 = sc.nextLine();
 				if (resposta2.equalsIgnoreCase("si")) {
 					jugador.unitatMonetaria=jugador.unitatMonetaria-empresaActual.valorCompra();
-					empresaActual.primeraAccioxPresident(jugador);
-					empresaActual.comprovaPresident(jugador);
+					i.imprimeix("Has comprat aquesta acció! et queden "+);
+					//Si no hi ha cap president en la empresa
+					if(empresaActual.president==null){
+						//Fem al jugador actual president
+						empresaActual.president=jugador;
+						i.imprimeix("Felicitats! Ets el nou president d'aquesta empresa, ja que ets la primera persona en adquirir una acció");
+					}else{
+						//Si hi ha un president comprobem si el jugador te mes accions que el president
+						if(empresaActual.numeroAccionsJugador(jugador)>empresaActual.numeroAccionsJugador(empresaActual.president)){
+							empresaActual.president=jugador;
+							i.imprimeix("Felicitats! Ets el nou president d'aquesta empresa, ja que t'acabas de convertir en el mayor accionista!");
+						}
+					}
 					empresaActual.accions.add(jugador);
 					jugador.accions--;
 				}
@@ -421,22 +433,22 @@ public class taulell {
 				xSeleccio = Integer.parseInt(sc.nextLine());
 				empresa empresaActual=empreses.get(xSeleccio);
 				i.imprimeix("Has seleccionat l'empresa: " + empresaActual.nom);
-				i.imprimeix("Aquesta accio te un valor actual de: "+empresaActual.valorVenta());
-				i.imprimeix("Vols vendre aquesta accio finalment?");
+				i.imprimeix("Aquesta acció te un valor actual de: "+empresaActual.valorVenta());
+				i.imprimeix("Vols vendre aquesta acció finalment?");
 				siFinal = sc.nextLine();
 				if (siFinal.equalsIgnoreCase("si")) {
 					jugador.unitatMonetaria=jugador.unitatMonetaria+empresaActual.valorVenta();
-					empresaActual.accions.remove(empresaActual.accions.size()-1);
+					empresaActual.eliminaUltimaAccio(jugador);
 					jugador.accions++;
 					if(empresaActual.president==jugador){
 						//Llista amb els posibles substituts per president
 						ArrayList<jugador> posiblesPresidents = new ArrayList<jugador>();
-						//Si el jugador es el president actual de la empresa
+						//Si el jugador és el president actual de la empresa
 						for(int i = 0; i<jugadors.size();i++){
 							if(jugadors.get(i)==jugador){
 								//Si es el mateix jugador no es comproba res
 							}else{
-								if(empresaActual.numeroAccionsJugador(jugadors.get(i))> empresaActual.numeroAccionsJugador(empresaActual.president)){
+								if(empresaActual.numeroAccionsJugador(jugadors.get(i))>empresaActual.numeroAccionsJugador(empresaActual.president)){
 									posiblesPresidents.add(jugadors.get(i));
 								}
 							}
@@ -444,13 +456,13 @@ public class taulell {
 						if(posiblesPresidents.size()>1){
 							i.imprimeix("Aquests jugadors tenen mes accions que tu a causa de la venta que has fet");
 							for(int x=0; x<posiblesPresidents.size(); x++){
-								i.imprimeix(x+".-"+posiblesPresidents.get(x));
+								i.imprimeix(x+".-"+posiblesPresidents.get(x).nom);
 							}
 							i.imprimeix("Selecciona un d'aquests per ser el teu substitut en la presidència: ");
 							int nouPresident=Integer.parseInt(sc.nextLine());
 							empresaActual.president=posiblesPresidents.get(nouPresident);
 							i.imprimeix("Felicitats! "+empresaActual.president.nom+", s'ha convertit en el nou president");
-						}else{
+						}else if(posiblesPresidents.size()==1){
 							empresaActual.president=posiblesPresidents.get(0);
 							i.imprimeixErr(empresaActual.president.nom+" s'ha convertit en el nou president per que es el mayor accionista");
 						}
